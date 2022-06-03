@@ -1,6 +1,10 @@
 balance = 0
 granted = False
 
+valid_option = [1, 2, 3, 4, 5, 9]
+
+
+
 
 # gives access
 def grant():
@@ -26,6 +30,18 @@ def login(username, password):
         grant()
     else:
         print("Wrong username or password")
+        tryAgain = int(input("Type '1' to try again \nType '2' to close program"))
+        if tryAgain == 1:
+            access(option)
+        elif tryAgain == 2:
+            exit()
+        elif tryAgain != 1 or 2:
+            print("invalid response now closing... in")
+        else:
+            print("error")
+
+
+
 
 
 def register(username, password):
@@ -62,22 +78,38 @@ def start():
 
 # main program
 def menu(username):
+    global nInt
     global n
     global balance
     if granted:
         n = 0
+        print("----------------------------------------------------------------")
         print("Welcome", username)
+        print("Your balance is: $", balance)
         print(" 1. Deposit \n 2. Withdraw \n 3. Check Balance \n 4. USD to crypto \n 5. Foreign \n 9. Log out")
-        n = int(input("Please select one of the options"))
-        menu_items()
+        try:
+            n = int(input("Please select one of the options"))
+            menu_items()
+        except ValueError:
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("Please select a number! ")
+            menu_items()
 
 
 def deposit():
     global balance
-    dep = float(input("how much would you like to deposit? "))
-    balance = balance + dep
-    print("Your balance is $", round(balance, 2))
-    menu(username)
+
+    while True:
+        try:
+            dep = float(input("how much would you like to deposit? $"))
+            balance = balance + dep
+            print("Your balance is $", round(balance, 2))
+            menu(username)
+            break
+        except ValueError:
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("Number only!")
+
 
 
 def withdraw():
@@ -85,30 +117,45 @@ def withdraw():
 
 
 def check_balance():
-    print("Your balance is: ", round(balance, 2))
+    print("Your balance is: $", round(balance, 2))
+
+def crypto():
+    file = open("crypto.py")
+
+def log_out():
+    print("----------------------------------------------------------------")
+    print("logged out.")
+    access(option)
+
 
 
 
 
 def menu_items():
     global n
-    if n == 1:
+    if n == 69:
+        menu_items()
+    elif n == 1:
+        # deposit
         deposit()
     elif n == 2:
+        # withdraw
         withdraw()
     elif n == 3:
+        #check balance
         check_balance()
     elif n == 4:
-        # add crypto
+        #crypto
+        crypto()
         pass
     elif n == 5:
         # add foreign later
         pass
     elif n == 9:
-        # log out
-        pass
+        log_out()
     else:
-        menu_items()
+        n = 69
+        menu(username)
 
 start()
 access(option)
