@@ -4,8 +4,6 @@ granted = False
 valid_option = [1, 2, 3, 4, 5, 9]
 
 
-
-
 # gives access
 def grant():
     global granted
@@ -41,13 +39,10 @@ def login(username, password):
             print("error")
 
 
-
-
-
 def register(username, password):
     global balance
     file = open("userInfo/user.txt", "a")
-    file.write("\n" + username + "," + password + "," + balance)
+    file.write("\n" + username + "," + password + "," + str(balance))
     file.close()
     print("You have been registered ")
     grant()
@@ -86,7 +81,7 @@ def menu(username):
         print("----------------------------------------------------------------")
         print("Welcome", username)
         print("Your balance is: $", balance)
-        print(" 1. Deposit \n 2. Withdraw \n 3. Check Balance \n 4. USD to crypto \n 5. Foreign \n 9. Log out")
+        print(" 1. Deposit \n 2. Send Money \n 3. Check Balance \n 4. USD to crypto \n 5. Foreign \n 9. Log out")
         try:
             n = int(input("Please select one of the options"))
             menu_items()
@@ -107,28 +102,63 @@ def deposit():
             menu(username)
             break
         except ValueError:
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             print("Number only!")
 
+def send_money(username):
+    global accept
+    global balance
+    accept = False
+    x = input("Please enter a username to send to: ")
+    file = open("userInfo/user.txt", "r")
+    for i in file:
+        a = i.split(",")
+        if a == username:
+            accept = True
+            try:
+                AmtOfMoneyToSend = float(input("How much would you like to send? "))
+                if AmtOfMoneyToSend > balance:
+                    print("Not enough money \nTry Again!")
+                    send_money(username)
+                else:
+                    AmtOfMoneyToSend = str(AmtOfMoneyToSend)
+                    confirm = input("Send $" + AmtOfMoneyToSend + "\n 'y' for yes \n 'n' for no")
+                    if confirm == "y":
+                        AmtOfMoneyToSend = float(AmtOfMoneyToSend)
+                        balance = balance - AmtOfMoneyToSend
+                        print("Thank you!")
+                        menu(username)
+                        break
+                    elif confirm == "n":
+                        print("Terminating transaction....")
+                        menu(username)
+                        break
+            except ValueError:
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print("Please type in dollar amount")
+        elif not accept:
+            print("User does not exist!")
+            send_money(username)
 
 
-def withdraw():
-    pass
+
+
+
 
 
 def check_balance():
     print("Your balance is: $", round(balance, 2))
+    menu(username)
+
 
 def crypto():
     file = open("crypto.py")
+
 
 def log_out():
     print("----------------------------------------------------------------")
     print("logged out.")
     access(option)
-
-
-
 
 
 def menu_items():
@@ -139,13 +169,13 @@ def menu_items():
         # deposit
         deposit()
     elif n == 2:
-        # withdraw
-        withdraw()
+        # send money
+        send_money(username)
     elif n == 3:
-        #check balance
+        # check balance
         check_balance()
     elif n == 4:
-        #crypto
+        # crypto
         crypto()
         pass
     elif n == 5:
@@ -157,9 +187,7 @@ def menu_items():
         n = 69
         menu(username)
 
+
 start()
 access(option)
 menu(username)
-
-
-
