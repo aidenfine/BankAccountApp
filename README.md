@@ -6,6 +6,6 @@ Features include
 - Login/Register
 - Deposit 
 - Check Balance 
-- Withdraw
+- Send money to users
 - Error Checking
 - USD to crypto converter
