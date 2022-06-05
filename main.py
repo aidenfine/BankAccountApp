@@ -105,15 +105,14 @@ def deposit():
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             print("Number only!")
 
-def send_money(username):
+def send_money(x):
     global accept
     global balance
     accept = False
     x = input("Please enter a username to send to: ")
     file = open("userInfo/user.txt", "r")
-    for i in file:
-        a = i.split(",")
-        if a == username:
+    readfile = file.read()
+    if x in readfile:
             accept = True
             try:
                 AmtOfMoneyToSend = float(input("How much would you like to send? "))
@@ -128,17 +127,17 @@ def send_money(username):
                         balance = balance - AmtOfMoneyToSend
                         print("Thank you!")
                         menu(username)
-                        break
+                       # break
                     elif confirm == "n":
                         print("Terminating transaction....")
                         menu(username)
-                        break
+                        #break
             except ValueError:
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 print("Please type in dollar amount")
-        elif not accept:
-            print("User does not exist!")
-            send_money(username)
+    elif not accept:
+        print("User does not exist!")
+        send_money(username)
 
 
 
